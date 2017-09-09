@@ -47,6 +47,7 @@ principal:
             addi r1,r0,x     ;Cálculo de dirección. r1 contiene la direccion del vector x
             addi r2,r0,y     ;Cálculo de dirección. r2 contiene la direccion del vector y 
             ld f0,a(r0)	    ;f0 contiene el valor de a, que vamos a aplicar en la fórmula
+            addi r20,r0,#16 ;Usado en el control de posiciones pendientes 
             addi r4,r1,512   ;64 elementos son 512 bytes. r4 me indica hasta cuando debo de leer
             ;límite del vector. r4 va 
 bucle3:  
@@ -82,14 +83,15 @@ bucle3:
             ;desplazar punteros de vectores
             addi r1,r1,#24 ;Me muevo tres posiciones. Al ser doble precisión, 24 bytes
             addi r2,r2,#24 ;Me muevo tres posiciones. Al ser doble precisión, 24 bytes
-            
             ;Identificar cuantas posiciones me quedan por cargar
-comprobar:  subi r6,r4,r1; r6 me almacena la memoria que me queda por procesar. =0 no debo continuar.
+
+comprobar:  
+            sub r6,r4,r1 ; r6 me almacena la memoria que me queda por procesar. =0 no debo continuar.
             
             ;fin programa
             beqz r6,fin ;Si no me quedan mas posiciones por procesar (r6=0), finalizo el programa. 
             
-            sgt r7,r6,#16 ;r7 me dice si me quedan 3 o mas posiciones de vector.
+            sgt r7,r6,r20 ;r7 me dice si me quedan 3 o mas posiciones de vector.
             
             ;Me quedan mas de 3 posiciones, por tanto, repito bucle3
             bnez r7,bucle3 
