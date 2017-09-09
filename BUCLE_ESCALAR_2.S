@@ -70,7 +70,7 @@ principal:
             ld f0,a(r0)	    ;f0 contiene el valor de a, que vamos a aplicar en la fórmula
             addi r20,r0,#16 ;Usado en el control de posiciones pendientes 
             addi r4,r1,#1600   ;Tamaño del vector. r4 me indica hasta cuando debo de leer
-            ;límite del vector. r4 va 
+
 bucle3:  
             ;importante, al ser doble precisión, ocupan dos registros. Por tanto nos referimos a los registros
             ;como F0, F2, F4 ...

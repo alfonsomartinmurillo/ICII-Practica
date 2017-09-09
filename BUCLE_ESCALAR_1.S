@@ -66,7 +66,7 @@ principal:
             addi r2,r0,y     ;Cálculo de dirección. r2 contiene la direccion del vector y 
             ld f0,a(r0)	    ;f0 contiene el valor de a, que vamos a aplicar en la fórmula
             addi r4,r1,#1600   ;bytes ocupados por los vectores. r4 me indica hasta cuando debo de leer
-            ;límite del vector. r4 va 
+     
 bucle:  
             ;importante, al ser doble precisión, ocupan dos registros. Por tanto nos referimos a los registros
             ;como F0, F2, F4
