@@ -15,10 +15,6 @@
 
 a:         .double 1595
 
-;Escalar tamaño vector
-
-lvec: .double 512 
-
 ;vector x
 
 x:         .double 0, 1, 2, 3, 4, 5, 6, 7, 8, 9
@@ -26,8 +22,22 @@ x:         .double 0, 1, 2, 3, 4, 5, 6, 7, 8, 9
            .double 20, 21, 22, 23, 24, 25, 26, 27, 28, 29
            .double 30, 31, 32, 33, 34, 35, 36, 37, 38, 39
            .double 40, 41, 42, 43, 44, 45, 46, 47, 48, 49
-           .double 50, 51, 52, 53, 54, 55, 56, 57, 58, 59
-           .double 60, 61, 62, 63
+           .double 0, 1, 2, 3, 4, 5, 6, 7, 8, 9
+           .double 10, 11, 12, 13, 14, 15, 16, 17, 18, 19
+           .double 20, 21, 22, 23, 24, 25, 26, 27, 28, 29
+           .double 30, 31, 32, 33, 34, 35, 36, 37, 38, 39
+           .double 40, 41, 42, 43, 44, 45, 46, 47, 48, 49
+           .double 0, 1, 2, 3, 4, 5, 6, 7, 8, 9
+           .double 10, 11, 12, 13, 14, 15, 16, 17, 18, 19
+           .double 20, 21, 22, 23, 24, 25, 26, 27, 28, 29
+           .double 30, 31, 32, 33, 34, 35, 36, 37, 38, 39
+           .double 40, 41, 42, 43, 44, 45, 46, 47, 48, 49
+           .double 0, 1, 2, 3, 4, 5, 6, 7, 8, 9
+           .double 10, 11, 12, 13, 14, 15, 16, 17, 18, 19
+           .double 20, 21, 22, 23, 24, 25, 26, 27, 28, 29
+           .double 30, 31, 32, 33, 34, 35, 36, 37, 38, 39
+           .double 40, 41, 42, 43, 44, 45, 46, 47, 48, 49
+
 
 ;vector y
 
@@ -37,9 +47,20 @@ y:         .double 100, 100, 100, 100, 100, 100, 100, 100, 100, 100
            .double 100, 100, 100, 100, 100, 100, 100, 100, 100, 100
            .double 100, 100, 100, 100, 100, 100, 100, 100, 100, 100
            .double 100, 100, 100, 100, 100, 100, 100, 100, 100, 100
-           .double 100, 100, 100, 100
-
-z:         .space 512   ;Vector Z
+           .double 100, 100, 100, 100, 100, 100, 100, 100, 100, 100
+           .double 100, 100, 100, 100, 100, 100, 100, 100, 100, 100
+           .double 100, 100, 100, 100, 100, 100, 100, 100, 100, 100
+           .double 100, 100, 100, 100, 100, 100, 100, 100, 100, 100
+           .double 100, 100, 100, 100, 100, 100, 100, 100, 100, 100
+           .double 100, 100, 100, 100, 100, 100, 100, 100, 100, 100
+           .double 100, 100, 100, 100, 100, 100, 100, 100, 100, 100
+           .double 100, 100, 100, 100, 100, 100, 100, 100, 100, 100
+           .double 100, 100, 100, 100, 100, 100, 100, 100, 100, 100
+           .double 100, 100, 100, 100, 100, 100, 100, 100, 100, 100
+           .double 100, 100, 100, 100, 100, 100, 100, 100, 100, 100
+           .double 100, 100, 100, 100, 100, 100, 100, 100, 100, 100
+           .double 100, 100, 100, 100, 100, 100, 100, 100, 100, 100
+           .double 100, 100, 100, 100, 100, 100, 100, 100, 100, 100
 
 
            .text
@@ -48,7 +69,7 @@ principal:
             addi r2,r0,y     ;Cálculo de dirección. r2 contiene la direccion del vector y 
             ld f0,a(r0)	    ;f0 contiene el valor de a, que vamos a aplicar en la fórmula
             addi r20,r0,#16 ;Usado en el control de posiciones pendientes 
-            addi r4,r1,512   ;64 elementos son 512 bytes. r4 me indica hasta cuando debo de leer
+            addi r4,r1,#1600   ;Tamaño del vector. r4 me indica hasta cuando debo de leer
             ;límite del vector. r4 va 
 bucle3:  
             ;importante, al ser doble precisión, ocupan dos registros. Por tanto nos referimos a los registros
