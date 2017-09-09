@@ -4,9 +4,8 @@
 ; Bucle DAXPY con instrucciones escalares:
 ; Y=Y+a*X donde X e Y son vectores y a es un escalar. 
 ; Lo primero de lo que debo disponer es de dos vectores almacenados en memoria. 
-;
-;
-;
+
+
 
            .data
 ;Escalar a
