@@ -67,6 +67,8 @@ principal:
             addi r2,r0,y     ; Cálculo de dirección. r2 contiene la direccion del vector y 
             ld f0,a(r0)	    ; f0 contiene el valor de a, que vamos a aplicar en la fórmula
             addi r4,r1,#1600   ;bytes ocupados por los vectores. r4 me indica hasta cuando debo de leer
+            addi r20,r0,#8
+            addi r21,r0,#8 ; elementos de sección... Comenzamos con 8
             
             
 ;Gestiono la primera sección. Al procesar un vector de 200 posiciones, de 64 a 64, la sección libre es de 8
@@ -74,25 +76,28 @@ principal:
 
 ;64+64+64+8=200
 
-            addi r5,r0,#8 ; Total de elementos de primera sección a procesar
+            add r5,r0,r21 ; Total de elementos de primera sección a procesar. Inicialmente, lo que marca r21
             movi2s VLR,r5 ; Actualizo VLR con la longitud en elementos de la primera sección
-            multi r5,r5,#8 ; Actualizo r5 para que disponga del total en BYTES de la sección
+            mult r5,r5,r20 ; Actualizo r5 para que disponga del total en BYTES de la sección
+
 
 ;Cargo vectores y realizo cálculos
 bucle:  
-            lv V1,r1 ; Carga de elementos de vector x
-            lv V2,r2 ; Carga de elementos de vector y
-            multsv v1,v1,f0 ;Multiplico x*a y acumulo en x
+            lv V1,0(r1) ; Carga de elementos de vector x
+            lv V2,0(r2) ; Carga de elementos de vector y
+            multsv v1,f0,v1 ;Multiplico x*a y acumulo en x
             addv v2,v2,v1 ; Y=Y+a*X
-            sv r2,v2 ; almaceno la información calculada de Y
+            sv 0(r2),v2 ; almaceno la información calculada de Y
 
 ;Muevo el cursor sobre los vectores en base a las posiciones tratadas
-            addi r1,r1,r5 
-            addi r2,r2,r5
+            
+            add r1,r1,r5 
+            add r2,r2,r5
 
 ;restauro el nuevo valor de la sección (VLR=64)
-            multi r5,MVL,#8
-            movi2s VLR,MVL
+            addi r21,r0,#64
+            mult r5,r21,r20
+            movi2s VLR,r21
             
 ; Compruebo si he tratado todos los elementos, e itero en caso contrario
 
