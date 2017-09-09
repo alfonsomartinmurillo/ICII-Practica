@@ -93,7 +93,7 @@ comprobar:
             
             sgt r7,r6,r20 ;r7 me dice si me quedan 3 o mas posiciones de vector.
             
-            ;Me quedan mas de 3 posiciones, por tanto, repito bucle3
+            ;Si me quedan mas de 3 posiciones, repito bucle3
             bnez r7,bucle3 
             
             ;en caso contrario realizo la carga de una posición y vuelvo a comprobar
@@ -103,8 +103,8 @@ comprobar:
             addd f6,f6,f4 ;suma de Y=Y(i)+a*X(i)
             sd 0(r2),f6 ;almaceno el nuevo valor para el vector y
             ;desplazar punteros de vectores
-            addi r1,r1,#8 ;Me muevo tres posiciones. Al ser doble precisión, 24 bytes
-            addi r2,r2,#8 ;Me muevo tres posiciones. Al ser doble precisión, 24 bytes
+            addi r1,r1,#8 ;Me muevo una posición.
+            addi r2,r2,#8 ;Me muevo una posición.
             j comprobar
             
             
