@@ -59,24 +59,44 @@ y:         .double 100, 100, 100, 100, 100, 100, 100, 100, 100, 100
 
 
            .text
+           
+; Comienza el código
+
 principal: 
-            addi r1,r0,x     ;Cálculo de dirección. r1 contiene la direccion del vector x
-            addi r2,r0,y     ;Cálculo de dirección. r2 contiene la direccion del vector y 
-            ld f0,a(r0)	    ;f0 contiene el valor de a, que vamos a aplicar en la fórmula
+            addi r1,r0,x     ; Cálculo de dirección. r1 contiene la direccion del vector x
+            addi r2,r0,y     ; Cálculo de dirección. r2 contiene la direccion del vector y 
+            ld f0,a(r0)	    ; f0 contiene el valor de a, que vamos a aplicar en la fórmula
             addi r4,r1,#1600   ;bytes ocupados por los vectores. r4 me indica hasta cuando debo de leer
-            ;límite del vector. r4 va 
-bucle:  
-            ;importante, al ser doble precisión, ocupan dos registros. Por tanto nos referimos a los registros
-            ;como F0, F2, F4
-            ld f2,0(r1) ;carga X(i)
-            multd f4,f2,f0 ; en f4 almaceno la multiplicación entre f0 y f2, que representa a*X(i)
-            ld f6, 0(r2) ; carga de Y(i)
-            addd f6,f6,f4 ;suma de Y=Y(i)+a*X(i)
-            sd 0(r2),f6 ;almaceno el nuevo valor para el vector y
-            addi r1,r1,#8 ;Me muevo a la siguiente posición del vector x. Al ser doble precisión, 8 bytes
-            addi r2,r2,#8 ;Me muevo a la siguiente posición del vector y. Al ser doble precisión, 8 bytes
-            sgt r5,r1,r4 ;si r1 > r4 significa que ya no debo de leer más. 
-            beqz r5,bucle ; si r5=0 significa que r1 todavía no ha superado a r4, y queda información por procesar
             
+            
+;Gestiono la primera sección. Al procesar un vector de 200 posiciones, de 64 a 64, la sección libre es de 8
+
+
+;64+64+64+8=200
+
+            addi r5,r0,#8 ; Total de elementos de primera sección a procesar
+            movi2s VLR,r5 ; Actualizo VLR con la longitud en elementos de la primera sección
+            multi r5,r5,#8 ; Actualizo r5 para que disponga del total en BYTES de la sección
+
+;Cargo vectores y realizo cálculos
+bucle:  
+            lv V1,r1 ; Carga de elementos de vector x
+            lv V2,r2 ; Carga de elementos de vector y
+            multsv v1,v1,f0 ;Multiplico x*a y acumulo en x
+            addv v2,v2,v1 ; Y=Y+a*X
+            sv r2,v2 ; almaceno la información calculada de Y
+
+;Muevo el cursor sobre los vectores en base a las posiciones tratadas
+            addi r1,r1,r5 
+            addi r2,r2,r5
+
+;restauro el nuevo valor de la sección (VLR=64)
+            multi r5,MVL,#8
+            movi2s VLR,MVL
+            
+; Compruebo si he tratado todos los elementos, e itero en caso contrario
+
+            sub r3,r4,r1  
+            bnez r3,bucle ; Itero, en el caso de que sigan quedando posiciones por procesar    
             trap 6 ;Fin de Programa
  
